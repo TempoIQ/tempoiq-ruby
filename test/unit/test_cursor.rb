@@ -1,3 +1,7 @@
+require 'simplecov'
+require 'simplecov-cobertura'
+SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+SimpleCov.start
 require 'test/unit'
 require 'json'
 require 'time'
