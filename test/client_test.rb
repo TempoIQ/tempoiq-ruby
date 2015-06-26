@@ -757,7 +757,7 @@ module ClientTest
       :devices => {:key => device_key}
     }
 
-    rows = client.single(selection, :before, ts).to_a
+    rows = client.single(selection, :before, Time.utc(2012, 1, 2)).to_a
 
     assert_equal(1, rows.size)
     assert_equal(4.0, rows[0].value(device.key, sensor_key1))
@@ -919,19 +919,19 @@ module ClientTest
     assert_equal(2.0, rows[0].value(device.key, sensor_key2))
   end
 
-  def test_delete_datapoints_nonexistent_device
-    client = get_client
-    device_key = "not_found"
-    sensor_key = "also_not_found"
-
-    client.remoter.stub(:delete, "/v2/devices/#{device_key}/sensors/#{sensor_key}/datapoints", 404)
-
-    start = Time.utc(2011, 1, 1)
-    stop = Time.utc(2013, 1, 1)
-    assert_raise TempoIQ::HttpException do
-      client.delete_datapoints(device_key, sensor_key, start, stop)
-    end
-  end
+   def test_delete_datapoints_nonexistent_device
+     client = get_client
+     device_key = "not_found"
+     sensor_key = "also_not_found"
+ 
+     client.remoter.stub(:delete, "/v2/devices/#{device_key}/sensors/#{sensor_key}/datapoints", 404)
+ 
+     start = Time.utc(2011, 1, 1)
+     stop = Time.utc(2013, 1, 1)
+     assert_raise TempoIQ::HttpException do
+       client.delete_datapoints(device_key, sensor_key, start, stop)
+     end
+   end
 
   private
 
